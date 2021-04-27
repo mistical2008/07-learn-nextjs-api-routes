@@ -2,10 +2,11 @@ import fs from "fs";
 import path from "path";
 
 export default function handler(req, res) {
-  if (req.method === "POST") {
-    return post(req, res);
-  }
-  res.status(200).json({ message: "Server works, but your request doesn't" });
+  const methods = {
+    POST: () => post(req, res),
+  };
+
+  methods[req.method]();
 }
 
 function post(req, res) {

@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Home = () => {
   const emailRef = useRef();
   const messageRef = useRef();
+  const [debugData, setDebugData] = useState("");
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -16,7 +17,8 @@ const Home = () => {
         "Content-type": "application/json",
       },
     });
-    res.json();
+    const data = await res.json();
+    setDebugData(JSON.stringify(data, null, 2));
   };
 
   return (
@@ -38,6 +40,12 @@ const Home = () => {
             ref={messageRef}
           />
         </p>
+        {debugData && (
+          <>
+            <h2>Debug data</h2>
+            <pre>{debugData}</pre>
+          </>
+        )}
         <button>Send message</button>
       </form>
     </div>

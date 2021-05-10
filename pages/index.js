@@ -4,6 +4,7 @@ const Home = () => {
   const emailRef = useRef();
   const messageRef = useRef();
   const [debugData, setDebugData] = useState("");
+  const [feedbackItems, setFeedbackItems] = useState([]);
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -19,6 +20,14 @@ const Home = () => {
     });
     const data = await res.json();
     setDebugData(JSON.stringify(data, null, 2));
+  };
+
+  const loadData = async () => {
+    const res = await fetch("/api/feedback", { method: "GET" });
+    const data = await res.json();
+    console.log("Feddback from responce:", data.feedback);
+    setFeedbackItems(data.feedback);
+    console.log("Feddback items:", feedbackItems);
   };
 
   return (
@@ -40,14 +49,24 @@ const Home = () => {
             ref={messageRef}
           />
         </p>
-        {debugData && (
-          <>
-            <h2>Debug data</h2>
-            <pre>{debugData}</pre>
-          </>
-        )}
         <button>Send message</button>
+        <hr />
       </form>
+      {debugData && (
+        <>
+          <h1>Debug data:</h1>
+          <pre>{debugData}</pre>
+        </>
+      )}
+      <button onClick={() => loadData()}>Load feedback</button>
+      <ul>
+        {feedbackItems.map((item) => (
+          <li key={item.id}>
+            <b>{item.email}: </b>
+            {item.message}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

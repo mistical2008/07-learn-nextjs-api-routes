@@ -9,11 +9,11 @@ export default function handler(req, res) {
   methods[req.method]();
 }
 
-function generateDataPath() {
+export function generateDataPath() {
   return path.join(process.cwd(), "data", "feedback.json");
 }
 
-function readData(dataPath) {
+export function readData(dataPath) {
   const fileData = fs.readFileSync(dataPath);
   return JSON.parse(fileData);
 }

@@ -9,15 +9,6 @@ export default function handler(req, res) {
   methods[req.method]();
 }
 
-export function generateDataPath() {
-  return path.join(process.cwd(), "data", "feedback.json");
-}
-
-export function readData(dataPath) {
-  const fileData = fs.readFileSync(dataPath);
-  return JSON.parse(fileData);
-}
-
 function post(req, res) {
   const newFeedback = {
     id: new Date().getTime(),
@@ -40,4 +31,14 @@ function get(req, res) {
   const dataPath = generateDataPath();
   const data = readData(dataPath);
   res.status(200).json({ feedback: data });
+}
+
+// Utils:
+export function generateDataPath() {
+  return path.join(process.cwd(), "data", "feedback.json");
+}
+
+export function readData(dataPath) {
+  const fileData = fs.readFileSync(dataPath);
+  return JSON.parse(fileData);
 }
